@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 
-template<typename T>
+template<typename T, >
 class UnqPtr
 {
 private:

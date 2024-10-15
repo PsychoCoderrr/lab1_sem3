@@ -2,19 +2,16 @@
 #include <stdio.h>
 
 template<typename T>
-struct Deleter
+void
+Deleter<T>::operator()(T* ptr)
 {
-    void operator()(T* ptr)
-    {
-        delete ptr;
-    }
-};
+    delete ptr;
+}
+
 
 template<typename T>
-struct Deleter<T[]>
+void
+Deleter<T[]>::operator()(T* ptr)
 {
-    void operator()(T* ptr)
-    {
-        delete[] ptr;
-    }
+    delete[] ptr;
 };

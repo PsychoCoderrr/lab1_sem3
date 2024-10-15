@@ -4,9 +4,16 @@
 #include <stdio.h>
 
 template<typename T>
-struct Deleter;
+struct Deleter
+{
+    void operator()(T* ptr);
+};
+
 
 template<typename T>
-struct Deleter<T[]>;
+struct Deleter<T[]>
+{
+    void operator()(T* ptr);
+};
 
 #endif
