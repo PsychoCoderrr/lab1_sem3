@@ -26,5 +26,17 @@ public:
     }
     
     
+    bool IsFree()
+    {
+        if (ptr == nullptr)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
     
 };
