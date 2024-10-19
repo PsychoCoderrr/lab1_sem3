@@ -28,17 +28,7 @@ public:
     }
     
     
-    bool IsFree()
-    {
-        if (ptr == nullptr)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+    
     pointer realese()
     {
         pointer buf = ptr;
@@ -51,6 +41,30 @@ public:
         my_swap(ptr, buf.ptr);
     }
     
+    
+    pointer get()
+    {
+        return ptr;
+    }
+    deleter_type& get_deleter()
+    {
+        return del;
+    }
+    const deleter_type& get_deleter() const
+    {
+        return del;
+    }
+    bool IsFree()
+    {
+        if (ptr == nullptr)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 };
 
 #endif
