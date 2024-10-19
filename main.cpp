@@ -1,6 +1,9 @@
 #include <iostream>
 
-int main(int argc, const char * argv[]) {
+int main(){
     
-    return 0;
+    
+        
+return 0;
 }
+

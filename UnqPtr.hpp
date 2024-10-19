@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "MyDeleter.hpp"
 #include "utility"
+#include "MySwap"
 
 template<typename T, typename Ptr_Deleter = Deleter<T>>
 class UnqPtr
@@ -37,6 +38,19 @@ public:
         {
             return false;
         }
-    };
+    }
+    pointer realese()
+    {
+        pointer buf = ptr;
+        ptr = nullptr;
+        return buf;
+    }
+    void reset()
+    {
+        UnqPtr<T, MyDeleter> buf = UnqPtr<T, MyDeleter>;
+        my_swap(ptr, buf.ptr);
+    }
+    
+};
 
 #endif
