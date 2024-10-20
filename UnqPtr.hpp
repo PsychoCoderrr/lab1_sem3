@@ -38,7 +38,7 @@ public:
     }
     void reset()
     {
-        UnqPtr<T, MyDeleter> buf = UnqPtr<T, MyDeleter>;
+        UnqPtr<T, Deleter> buf = UnqPtr<T, Deleter>;
         my_swap(ptr, buf.ptr);
     }
     
@@ -91,6 +91,50 @@ public:
         return ptr[index];
     }
 
+    // Non-member functions
+    template<typename T, class Deleter = Deleter<T>>
+    UnqPtr<T, Deleter> make_unique(int size)
+    {
+        T*ptr = new T[size];
+        return UnqPtr<T, Deleter>(ptr);
+    }
+    
+    template<typename T, class Deleter = Deleter<T>, typename Args...>
+    UnqPtr<T, Deleter> make_unique(int size, Arqs&&... args)
+    {
+        T*ptr = new T[size];
+        for(int i = 0; i < size; i++)
+        {
+            ptr[i] = T(args...)
+        }
+        return UnqPtr<T, Deleter>(ptr;)
+    }
+    
+    template<typename T, class Deleter = Deleter<T>>
+    bool operator ==(UnqPtr<T, Deleter> ptr_a, UnqPtr<T, Deleter> ptr_b)
+    {
+        if (ptr_a.get == ptr_b.get)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    template<typename T, class Deleter = Deleter<T>>
+    bool operator != (UnqPtr<T, Deleter> ptr_a, UnqPtr<T, Deleter> ptr_b)
+    {
+        if (ptr.get != ptr_b.get)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 };
 
 #endif
