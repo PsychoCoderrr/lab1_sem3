@@ -80,61 +80,62 @@ public:
     
     //Array version
     template<typename U = T>
-    enable_if_t<is_array<U>::value, std::remove_extent_t<U>&> operator[](std::size_t index) 
+    enable_if_t<is_array<U>::value, std::remove_extent_t<U>&> operator[](std::size_t index)
     {
         return ptr[index];
     }
     
     template<typename U = T>
-    enable_if_t<is_array<U>::value, const std::remove_extent_t<U>&> operator[](std::size_t index) const 
+    enable_if_t<is_array<U>::value, const std::remove_extent_t<U>&> operator[](std::size_t index) const
     {
         return ptr[index];
     }
-
-    // Non-member functions
-    template<typename T, class Deleter = Deleter<T>>
-    UnqPtr<T, Deleter> make_unique(int size)
-    {
-        T*ptr = new T[size];
-        return UnqPtr<T, Deleter>(ptr);
-    }
-    
-    template<typename T, class Deleter = Deleter<T>, typename Args...>
-    UnqPtr<T, Deleter> make_unique(int size, Arqs&&... args)
-    {
-        T*ptr = new T[size];
-        for(int i = 0; i < size; i++)
-        {
-            ptr[i] = T(args...)
-        }
-        return UnqPtr<T, Deleter>(ptr;)
-    }
-    
-    template<typename T, class Deleter = Deleter<T>>
-    bool operator ==(UnqPtr<T, Deleter> ptr_a, UnqPtr<T, Deleter> ptr_b)
-    {
-        if (ptr_a.get == ptr_b.get)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    
-    template<typename T, class Deleter = Deleter<T>>
-    bool operator != (UnqPtr<T, Deleter> ptr_a, UnqPtr<T, Deleter> ptr_b)
-    {
-        if (ptr.get != ptr_b.get)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
 };
+
+// Non-member functions
+template<typename T, class Deleter = Deleter<T>>
+UnqPtr<T, Deleter> make_unique(int size)
+{
+    T*ptr = new T[size];
+    return UnqPtr<T, Deleter>(ptr);
+}
+
+template<typename T, class Deleter = Deleter<T>, typename Args...>
+UnqPtr<T, Deleter> make_unique(int size, Arqs&&... args)
+{
+    T*ptr = new T[size];
+    for(int i = 0; i < size; i++)
+    {
+        ptr[i] = T(args...)
+    }
+    return UnqPtr<T, Deleter>(ptr;)
+}
+
+template<typename T, class Deleter = Deleter<T>>
+bool operator ==(UnqPtr<T, Deleter> ptr_a, UnqPtr<T, Deleter> ptr_b)
+{
+    if (ptr_a.get == ptr_b.get)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+template<typename T, class Deleter = Deleter<T>>
+bool operator != (UnqPtr<T, Deleter> ptr_a, UnqPtr<T, Deleter> ptr_b)
+{
+    if (ptr.get != ptr_b.get)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 
 #endif
