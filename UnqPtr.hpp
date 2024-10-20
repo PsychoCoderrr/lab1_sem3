@@ -4,6 +4,7 @@
 #include "MyDeleter.hpp"
 #include "utility"
 #include "MySwap"
+#include "TraitsForArray.hpp"
 
 template<typename T, typename Ptr_Deleter = Deleter<T>>
 class UnqPtr
@@ -28,7 +29,7 @@ public:
     }
     
     
-    
+    //Modifiers
     pointer realese()
     {
         pointer buf = ptr;
@@ -41,7 +42,7 @@ public:
         my_swap(ptr, buf.ptr);
     }
     
-    
+    //Observers
     pointer get()
     {
         return ptr;
@@ -65,6 +66,31 @@ public:
             return false;
         }
     }
+    
+    //Single-object version
+    T& operator *()
+    {
+        return *ptr;
+    }
+    
+    pointer operator()
+    {
+        return ptr;
+    }
+    
+    //Array version
+    template<typename U = T>
+    enable_if_t<is_array<U>::value, std::remove_extent_t<U>&> operator[](std::size_t index) 
+    {
+        return ptr[index];
+    }
+    
+    template<typename U = T>
+    enable_if_t<is_array<U>::value, const std::remove_extent_t<U>&> operator[](std::size_t index) const 
+    {
+        return ptr[index];
+    }
+
 };
 
 #endif
