@@ -1,16 +1,17 @@
 #pragma once
-
+#include <type_traits>
 #include <stdio.h>
 #include "MyDeleter.hpp"
 #include "utility"
 #include "MySwap.hpp"
 #include "TraitsForArrays.hpp"
-
+#define BAD_TYPE 100;
 template<typename T, typename Ptr_Deleter = Deleter<T>>
 class UnqPtr
 {
+    using K = remove_extent_t<T>;
 private:
-    using element_type = T;
+    using element_type = K;
     using pointer = element_type*;
     using deleter_type = Ptr_Deleter;
     pointer ptr;
@@ -19,7 +20,7 @@ public:
     UnqPtr(): ptr(nullptr) {};
     UnqPtr(pointer other):ptr(std::move(other)) {};
     UnqPtr(const UnqPtr<element_type, deleter_type>& other) = delete;
-    UnqPtr(UnqPtr<element_type, deleter_type>&& other):ptr(other)
+    UnqPtr(UnqPtr<element_type, deleter_type>&& other):ptr(other.ptr)
     {
         other.ptr = nullptr;
     }
@@ -38,8 +39,8 @@ public:
     }
     void reset()
     {
-        UnqPtr<T, deleter_type> buf = UnqPtr<T, deleter_type>();
-        my_swap(ptr, buf.ptr);
+        UnqPtr<element_type, deleter_type> buf = UnqPtr<element_type, deleter_type>();
+        swap(ptr, buf.ptr);
     }
     
     //Observers
@@ -47,6 +48,11 @@ public:
     {
         return ptr;
     }
+    const pointer get() const
+    {
+        return ptr;
+    }
+    
     deleter_type& get_deleter()
     {
         return del;
@@ -68,7 +74,7 @@ public:
     }
     
     //Single-object version
-    T& operator *()
+    element_type& operator *()
     {
         return *ptr;
     }
@@ -79,29 +85,63 @@ public:
     }
     
     //Array version
-    template<typename U = element_type>
+    /*template<typename U = T>
     enable_if_t<is_array<U>::value, std::remove_extent_t<U>&> operator[](std::size_t index)
     {
         return ptr[index];
     }
     
-    template<typename U = element_type>
+    template<typename U = T>
     enable_if_t<is_array<U>::value, const std::remove_extent_t<U>&> operator[](std::size_t index) const
     {
         return ptr[index];
+    }*/
+    /*template<typename U = T>
+        enable_if_t<is_array_t<U>>& operator[](int index) {
+            return ptr[index];
+        }
+    template<typename U = T>
+        const K& operator[](int index) const {
+            return ptr[index];
+        }*/
+    
+    template <typename U = T>
+    K& operator [](int index)&
+    {
+        if (is_array<U>::type)
+        {
+            return ptr[index];
+        }
+        else
+        {
+            throw BAD_TYPE;
+        }
+    }
+    
+    template <typename U = T>
+    const K& operator [](int index) const
+    {
+        if (is_array<U>::type)
+        {
+            return ptr[index];
+        }
+        else
+        {
+            throw BAD_TYPE;
+        }
     }
 };
 
 // Non-member functions
-template<typename T, class Ptr_Deleter = Deleter<T>>
-UnqPtr<T, Ptr_Deleter> make_unique(int size)
+template<typename T, class Ptr_Deleter = Deleter<T[]>>
+UnqPtr<T[], Ptr_Deleter> make_unique(int size)
 {
     T*ptr = new T[size];
     return UnqPtr<T, Ptr_Deleter>(ptr);
 }
 
-template<typename T, class Ptr_Deleter = Deleter<T>, typename... Args>
-UnqPtr<T, Ptr_Deleter> make_unique(int size, Args&&... args)
+template<typename T, class Ptr_Deleter = Deleter<T[]>, typename... Args>
+UnqPtr<T[], Ptr_Deleter> make_unique(int size, Args&&... args)
 {
     T*ptr = new T[size];
     for(int i = 0; i < size; i++)
@@ -139,7 +179,7 @@ bool operator != (UnqPtr<T, Ptr_Deleter> lhs, UnqPtr<T, Ptr_Deleter> rhs)
 
 template<typename T, class Ptr_Deleter = Deleter<T>>
 bool operator>(const UnqPtr<T, Ptr_Deleter>& lhs, const UnqPtr<T, Ptr_Deleter>& rhs) {
-    if (lhs.get() > rhs.get)
+    if (lhs.get() > rhs.get())
     {
         return true;
     }
@@ -151,7 +191,7 @@ bool operator>(const UnqPtr<T, Ptr_Deleter>& lhs, const UnqPtr<T, Ptr_Deleter>& 
 
 template<typename T, class Ptr_Deleter = Deleter<T>>
 bool operator>=(const UnqPtr<T, Ptr_Deleter>& lhs, const UnqPtr<T, Ptr_Deleter>& rhs) {
-    if (lhs.get() >= rhs.get)
+    if (lhs.get() >= rhs.get())
     {
         return true;
     }
@@ -163,7 +203,7 @@ bool operator>=(const UnqPtr<T, Ptr_Deleter>& lhs, const UnqPtr<T, Ptr_Deleter>&
 
 template<typename T, class Ptr_Deleter = Deleter<T>>
 bool operator<(const UnqPtr<T, Ptr_Deleter>& lhs, const UnqPtr<T, Ptr_Deleter>& rhs) {
-    if (lhs.get() < rhs.get)
+    if (lhs.get() < rhs.get())
     {
         return true;
     }

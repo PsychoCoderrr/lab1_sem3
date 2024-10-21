@@ -2,28 +2,35 @@
 #include <iostream>
 #include <type_traits>
 
-template<typename T>
-struct is_array : std::false_type {};
-
-template<typename T>
-struct is_array<T[]> : std::true_type {};
-
-template<typename T, std::size_t N>
-struct is_array<T[N]> : std::true_type {};
-
-// Алиас для удобства
-template<typename T>
-using is_array_t = typename is_array<T>::type;
-
-// enable_if для активации определённых частей кода
-template<bool B, typename T = void>
-struct enable_if {};
-
-template<typename T>
-struct enable_if<true, T> {
+template <class T>
+struct remove_extent {
     using type = T;
 };
 
-// Алиас для enable_if
-template<bool B, typename T = void>
-using enable_if_t = typename enable_if<B, T>::type;
+template <class T, size_t N>
+struct remove_extent<T[N]> {
+    using type = T;
+};
+
+template <class T>
+struct remove_extent<T[]> {
+    using type = T;
+};
+
+template <class T>
+using remove_extent_t = typename remove_extent<T>::type;
+
+
+template<typename T>
+struct is_array {bool type = false;};
+
+template<typename T>
+struct is_array<T[]> {bool type = true;};
+
+template<typename T, std::size_t N>
+struct is_array<T[N]> {bool type = true;};
+
+
+
+
+

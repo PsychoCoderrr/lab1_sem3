@@ -99,7 +99,7 @@ public:
         return *this;
     }
     
-    template<typename U = element_type>
+    /*template<typename U = element_type>
     enable_if_t<is_array<U>::value, std::remove_extent_t<U>&> operator[](std::size_t index)
     {
         return ptr[index];
@@ -110,6 +110,7 @@ public:
     {
         return ptr[index];
     }
+    */
     
     //Modifiers
     void reset()
