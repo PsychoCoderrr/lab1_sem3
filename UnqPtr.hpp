@@ -93,28 +93,28 @@ public:
 };
 
 // Non-member functions
-template<typename T, class Deleter = Deleter<T>>
-UnqPtr<T, Deleter> make_unique(int size)
+template<typename T, class Ptr_Deleter = Deleter<T>>
+UnqPtr<T, Ptr_Deleter> make_unique(int size)
 {
     T*ptr = new T[size];
-    return UnqPtr<T, Deleter>(ptr);
+    return UnqPtr<T, Ptr_Deleter>(ptr);
 }
 
-template<typename T, class Deleter = Deleter<T>, typename Args...>
-UnqPtr<T, Deleter> make_unique(int size, Arqs&&... args)
+template<typename T, class Ptr_Deleter = Deleter<T>, typename Args...>
+UnqPtr<T, Ptr_Deleter> make_unique(int size, Arqs&&... args)
 {
     T*ptr = new T[size];
     for(int i = 0; i < size; i++)
     {
         ptr[i] = T(args...)
     }
-    return UnqPtr<T, Deleter>(ptr;)
+    return UnqPtr<T, Ptr_Deleter>(ptr;)
 }
 
-template<typename T, class Deleter = Deleter<T>>
-bool operator ==(UnqPtr<T, Deleter> ptr_a, UnqPtr<T, Deleter> ptr_b)
+template<typename T, class Ptr_Deleter = Deleter<T>>
+bool operator ==(UnqPtr<T, Ptr_Deleter> lhs, UnqPtr<T, Deleter> rhs)
 {
-    if (ptr_a.get == ptr_b.get)
+    if (lhs.get == rhs.get)
     {
         return true;
     }
@@ -124,10 +124,10 @@ bool operator ==(UnqPtr<T, Deleter> ptr_a, UnqPtr<T, Deleter> ptr_b)
     }
 }
 
-template<typename T, class Deleter = Deleter<T>>
-bool operator != (UnqPtr<T, Deleter> ptr_a, UnqPtr<T, Deleter> ptr_b)
+template<typename T, class Ptr_Deleter = Deleter<T>>
+bool operator != (UnqPtr<T, Ptr_Deleter> lhs, UnqPtr<T, Ptr_Deleter> rhs)
 {
-    if (ptr.get != ptr_b.get)
+    if (lhs.get != rhs.get)
     {
         return true;
     }
@@ -137,5 +137,52 @@ bool operator != (UnqPtr<T, Deleter> ptr_a, UnqPtr<T, Deleter> ptr_b)
     }
 }
 
+template<typename T, class Ptr_Deleter = Deleter<T>>
+bool operator>(const UnqPtr<T, Ptr_Deleter>& lhs, const UnqPtr<T, Ptr_Deleter>& rhs) {
+    if (lhs.get() > rhs.get)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+template<typename T, class Ptr_Deleter = Deleter<T>>
+bool operator>=(const UnqPtr<T, Ptr_Deleter>& lhs, const UnqPtr<T, Ptr_Deleter>& rhs) {
+    if (lhs.get() >= rhs.get)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+template<typename T, class Ptr_Deleter = Deleter<T>>
+bool operator<(const UnqPtr<T, Ptr_Deleter>& lhs, const UnqPtr<T, Ptr_Deleter>& rhs) {
+    if (lhs.get() < rhs.get)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+template<typename T, class Ptr_Deleter = Deleter<T>>
+bool operator<=(const UnqPtr<T, Ptr_Deleter>& lhs, const UnqPtr<T, Ptr_Deleter>& rhs) {
+    if (lhs.get() <= rhs.get)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 
 #endif
