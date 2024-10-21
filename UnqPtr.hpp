@@ -1,10 +1,10 @@
-#ifndef UnqPtr_hpp
-#define UnqPtr_hpp
+#pragma once
+
 #include <stdio.h>
 #include "MyDeleter.hpp"
 #include "utility"
-#include "MySwap"
-#include "TraitsForArray.hpp"
+#include "MySwap.hpp"
+#include "TraitsForArrays.hpp"
 
 template<typename T, typename Ptr_Deleter = Deleter<T>>
 class UnqPtr
@@ -38,7 +38,7 @@ public:
     }
     void reset()
     {
-        UnqPtr<T, Deleter> buf = UnqPtr<T, Deleter>;
+        UnqPtr<T, deleter_type> buf = UnqPtr<T, deleter_type>();
         my_swap(ptr, buf.ptr);
     }
     
@@ -73,7 +73,7 @@ public:
         return *ptr;
     }
     
-    pointer operator()
+    pointer operator->()
     {
         return ptr;
     }
@@ -100,19 +100,19 @@ UnqPtr<T, Ptr_Deleter> make_unique(int size)
     return UnqPtr<T, Ptr_Deleter>(ptr);
 }
 
-template<typename T, class Ptr_Deleter = Deleter<T>, typename Args...>
-UnqPtr<T, Ptr_Deleter> make_unique(int size, Arqs&&... args)
+template<typename T, class Ptr_Deleter = Deleter<T>, typename... Args>
+UnqPtr<T, Ptr_Deleter> make_unique(int size, Args&&... args)
 {
     T*ptr = new T[size];
     for(int i = 0; i < size; i++)
     {
-        ptr[i] = T(args...)
+        ptr[i] = T(args...);
     }
-    return UnqPtr<T, Ptr_Deleter>(ptr;)
+    return UnqPtr<T, Ptr_Deleter>(ptr);
 }
 
 template<typename T, class Ptr_Deleter = Deleter<T>>
-bool operator ==(UnqPtr<T, Ptr_Deleter> lhs, UnqPtr<T, Deleter> rhs)
+bool operator ==(UnqPtr<T, Ptr_Deleter> lhs, UnqPtr<T, Ptr_Deleter> rhs)
 {
     if (lhs.get == rhs.get)
     {
@@ -184,5 +184,3 @@ bool operator<=(const UnqPtr<T, Ptr_Deleter>& lhs, const UnqPtr<T, Ptr_Deleter>&
         return false;
     }
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef MySwap_hpp
-#define MySwap_hpp
+#pragma once
 
 #include <stdio.h>
 #include "utility"
@@ -12,4 +11,4 @@ void swap(T& a, T&b)
     b = std::move(a);
 }
 
-#endif
+

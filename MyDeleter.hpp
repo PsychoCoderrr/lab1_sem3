@@ -1,6 +1,4 @@
-#ifndef MyDeleter_hpp
-#define MyDeleter_hpp
-
+#pragma once
 #include <stdio.h>
 
 template<typename T>
@@ -22,5 +20,3 @@ struct Deleter<T[]>
         delete[] ptr;
     };
 };
-
-#endif
