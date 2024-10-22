@@ -5,7 +5,7 @@ struct ControlBlock
 {
     int ref_count;
     int weak_count;
-    ControlBlock(int ref = 0, int weak = 0): ref_count(0), weak_count(0){};
+    ControlBlock(int ref, int weak): ref_count(ref), weak_count(weak){};
 };
 
 template<typename T, typename Ptr_Deleter = Deleter<T>>
@@ -40,7 +40,7 @@ public:
     {
         if (count != nullptr)
         {
-            count->ref_count++;
+            ++(count->ref_count);
         }
     }
     ShrdPtr(ShrdPtr<element_type, deleter_type>& incoming_pointer)
@@ -49,10 +49,10 @@ public:
         count = incoming_pointer.count;
         if(count != nullptr)
         {
-            count->ref_count++;
+            ++(count->ref_count);
         }
     }
-    ShrdPtr(ShrdPtr<element_type, deleter_type>&& incoming_pointer): ptr(incoming_pointer.ptr), count(incoming_pointer.ptr)
+    ShrdPtr(ShrdPtr<element_type, deleter_type>&& incoming_pointer): ptr(incoming_pointer.ptr), count(incoming_pointer.count)
     {
         incoming_pointer.ptr = nullptr;
         incoming_pointer.count = nullptr;
@@ -60,11 +60,11 @@ public:
     //Destructor
     ~ShrdPtr()
     {
-        if (count != nullptr)
+        if (count == nullptr)
         {
             return;
         }
-        count->ref_count --;
+        --(count->ref_count);
         if(count->ref_count == 0)
         {
             deleter_type func_delete = deleter_type();
@@ -178,3 +178,34 @@ public:
     }
 };
 
+//Non-member functions
+template<typename T,class Ptr_Deleter =  Deleter<T>,typename... Args>
+ShrdPtr<T,Ptr_Deleter> make_shared(Args&& ... args){
+    return ShrdPtr<T,Ptr_Deleter>(new T(args...));
+}
+
+template<typename T, class Ptr_Deleter = Deleter<T>>
+bool operator ==(const ShrdPtr<T, Ptr_Deleter>& lhs, const ShrdPtr<T, Ptr_Deleter>& rhs)
+{
+    if (lhs.ptr == rhs.ptr)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+template<typename T, class Ptr_Deleter = Deleter<T>>
+bool operator !=(const ShrdPtr<T, Ptr_Deleter>& lhs, const ShrdPtr<T, Ptr_Deleter>& rhs)
+{
+    if (lhs.ptr != rhs.ptr)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
