@@ -25,10 +25,10 @@ template<typename T>
 struct is_array {bool type = false;};
 
 template<typename T>
-struct is_array<T[]> {bool type = true;};
+struct is_array<T[]> {static const bool type = true;};
 
 template<typename T, std::size_t N>
-struct is_array<T[N]> {bool type = true;};
+struct is_array<T[N]> {static const bool type = true;};
 
 
 

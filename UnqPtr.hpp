@@ -20,7 +20,7 @@ public:
     UnqPtr(): ptr(nullptr) {};
     UnqPtr(pointer other):ptr(std::move(other)) {};
     UnqPtr(const UnqPtr<element_type, deleter_type>& other) = delete;
-    UnqPtr(UnqPtr<element_type, deleter_type>&& other):ptr(other.ptr)
+    UnqPtr(UnqPtr&& other):ptr(other.ptr)
     {
         other.ptr = nullptr;
     }
@@ -133,14 +133,21 @@ public:
 };
 
 // Non-member functions
-template<typename T, class Ptr_Deleter = Deleter<T[]>>
+/*template<typename T, class Ptr_Deleter = Deleter<T> >
 UnqPtr<T[], Ptr_Deleter> make_unique(int size)
 {
-    T*ptr = new T[size];
+    T* ptr = new T[size];
     return UnqPtr<T, Ptr_Deleter>(ptr);
+}*/
+
+template<typename T,class Ptr_Deleter = Deleter<T>>
+UnqPtr<T[],Ptr_Deleter> make_unique(size_t size)
+{
+    T* ptr = new T[size];
+    return unique_ptr<T,Ptr_Deleter>(ptr);
 }
 
-template<typename T, class Ptr_Deleter = Deleter<T[]>, typename... Args>
+template<typename T, class Ptr_Deleter = Deleter<T>, typename... Args>
 UnqPtr<T[], Ptr_Deleter> make_unique(int size, Args&&... args)
 {
     T*ptr = new T[size];
@@ -148,7 +155,7 @@ UnqPtr<T[], Ptr_Deleter> make_unique(int size, Args&&... args)
     {
         ptr[i] = T(args...);
     }
-    return UnqPtr<T, Ptr_Deleter>(ptr);
+    return UnqPtr<T[], Ptr_Deleter>(ptr);
 }
 
 template<typename T, class Ptr_Deleter = Deleter<T>>
