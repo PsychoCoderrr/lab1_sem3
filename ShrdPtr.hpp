@@ -14,8 +14,9 @@ class WeakPtr{};
 template<typename T, typename Ptr_Deleter = Deleter<T>>
 class ShrdPtr
 {
+    using K = remove_extent_t<T>;
 private:
-    using element_type = T;
+    using element_type = K;
     using pointer = element_type*;
     using deleter_type = Ptr_Deleter;
     pointer ptr;
@@ -99,18 +100,31 @@ public:
         return *this;
     }
     
-    /*template<typename U = element_type>
-    enable_if_t<is_array<U>::value, std::remove_extent_t<U>&> operator[](std::size_t index)
+    template <typename U = T>
+    K& operator [](int index)&
     {
-        return ptr[index];
+        if (is_array<U>::type)
+        {
+            return ptr[index];
+        }
+        else
+        {
+            throw BAD_TYPE;
+        }
     }
     
-    template<typename U = element_type>
-    enable_if_t<is_array<U>::value, const std::remove_extent_t<U>&> operator[](std::size_t index) const
+    template <typename U = T>
+    const K& operator [](int index) const
     {
-        return ptr[index];
+        if (is_array<U>::type)
+        {
+            return ptr[index];
+        }
+        else
+        {
+            throw BAD_TYPE;
+        }
     }
-    */
     
     //Modifiers
     void reset()
