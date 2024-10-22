@@ -100,31 +100,7 @@ public:
         return *this;
     }
     
-    template <typename U = T>
-    K& operator [](int index)&
-    {
-        if (is_array<U>::type)
-        {
-            return ptr[index];
-        }
-        else
-        {
-            throw BAD_TYPE;
-        }
-    }
     
-    template <typename U = T>
-    const K& operator [](int index) const
-    {
-        if (is_array<U>::type)
-        {
-            return ptr[index];
-        }
-        else
-        {
-            throw BAD_TYPE;
-        }
-    }
     
     //Modifiers
     void reset()
@@ -154,5 +130,51 @@ public:
         return ptr;
     }
     
+    template <typename U = T>
+    K& operator [](int index)&
+    {
+        if (is_array<U>::type)
+        {
+            return ptr[index];
+        }
+        else
+        {
+            throw BAD_TYPE;
+        }
+    }
+    
+    template <typename U = T>
+    const K& operator [](int index) const
+    {
+        if (is_array<U>::type)
+        {
+            return ptr[index];
+        }
+        else
+        {
+            throw BAD_TYPE;
+        }
+    }
+    
+    int use_count()
+    {
+        if (count == nullptr)
+        {
+            return 0;
+        }
+        return count->ref_count;
+    }
+    
+    bool unique()
+    {
+        if(count->ref_count == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 };
 
