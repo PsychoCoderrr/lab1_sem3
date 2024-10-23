@@ -1,5 +1,7 @@
 #pragma once
 #include "MySwap.hpp"
+#include "MyDeleter.hpp"
+#include "TraitsForArrays.hpp"
 
 struct ControlBlock
 {
@@ -8,8 +10,8 @@ struct ControlBlock
     ControlBlock(int ref, int weak): ref_count(ref), weak_count(weak){};
 };
 
-template<typename T, typename Ptr_Deleter = Deleter<T>>
-class WeakPtr{};
+template<typename T, class Ptr_Deleter>
+class WeakPtr;
 
 template<typename T, typename Ptr_Deleter = Deleter<T>>
 class ShrdPtr

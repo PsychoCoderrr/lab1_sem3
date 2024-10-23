@@ -4,7 +4,7 @@
 #include "ShrdPtr.hpp"
 #include "UnqPtrTests.hpp"
 #include "ShrdPtrTest.hpp"
-
+#include "WeakPtr.hpp"
 int main(){
     test_create_and_dereference();
     test_move_ptr();
