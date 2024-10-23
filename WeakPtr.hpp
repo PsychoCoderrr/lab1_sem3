@@ -22,14 +22,14 @@ public:
             count->weak_count += 1;
         }
     }
-    WeakPtr(const WeakPtr<element_type, deleter_type>& incoming_pointer):ptr(incoming_pointer.prt), count(incoming_pointer.count)
+    WeakPtr(const WeakPtr<element_type, deleter_type>& incoming_pointer):ptr(incoming_pointer.ptr), count(incoming_pointer.count)
     {
         if(count != nullptr)
         {
             count->weak_count += 1;
         }
     }
-    WeakPtr(WeakPtr<element_type, deleter_type>&& incoming_pointer):ptr(incoming_pointer.ptr), count(incoming_pointer.ptr)
+    WeakPtr(WeakPtr<element_type, deleter_type>&& incoming_pointer):ptr(incoming_pointer.ptr), count(incoming_pointer.count)
     {
         incoming_pointer.ptr = nullptr;
         incoming_pointer.count = nullptr;

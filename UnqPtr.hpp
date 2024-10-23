@@ -132,14 +132,6 @@ public:
     }
 };
 
-// Non-member functions
-/*template<typename T, class Ptr_Deleter = Deleter<T> >
-UnqPtr<T[], Ptr_Deleter> make_unique(int size)
-{
-    T* ptr = new T[size];
-    return UnqPtr<T, Ptr_Deleter>(ptr);
-}*/
-
 template<typename T,class Ptr_Deleter = Deleter<T>>
 UnqPtr<T[],Ptr_Deleter> make_unique(size_t size)
 {

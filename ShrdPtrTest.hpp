@@ -37,7 +37,7 @@ void test_shared_ptr_copy() {
 void test_shared_ptr_move() {
     ShrdPtr<int> ptr1(new int(30));
     ShrdPtr<int> ptr2 = std::move(ptr1);
-    assert(ptr1.get() == nullptr);  // ptr1 должен быть пустым после перемещения
+    assert(ptr1.get() == nullptr);
     assert(ptr2.get() != nullptr);
     assert(*ptr2 == 30);
     assert(ptr2.use_count() == 1);
