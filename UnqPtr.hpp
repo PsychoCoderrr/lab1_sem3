@@ -2,7 +2,7 @@
 #include <type_traits>
 #include <stdio.h>
 #include "MyDeleter.hpp"
-#include "utility"
+#include <utility>
 #include "MySwap.hpp"
 #include "TraitsForArrays.hpp"
 #define BAD_TYPE 100;
@@ -16,6 +16,10 @@ private:
     using deleter_type = Ptr_Deleter;
     pointer ptr;
     deleter_type del = deleter_type();
+    inline void MySwap(UnqPtr& incoming_pointer)
+    {
+        swap(ptr, incoming_pointer.ptr);
+    }
 public:
     UnqPtr(): ptr(nullptr) {};
     UnqPtr(pointer other):ptr(std::move(other)) {};
@@ -39,8 +43,8 @@ public:
     }
     void reset()
     {
-        UnqPtr<element_type, deleter_type> buf = UnqPtr<element_type, deleter_type>();
-        swap(ptr, buf.ptr);
+        UnqPtr<T, deleter_type> buf = UnqPtr<T, deleter_type>();
+        MySwap(buf);
     }
     
     //Observers
@@ -129,6 +133,13 @@ public:
         {
             throw BAD_TYPE;
         }
+    }
+    
+    UnqPtr& operator=(UnqPtr<T, deleter_type>&& incoming_pointer)
+    {
+        UnqPtr<T,deleter_type> temp_ptr(std::move(incoming_pointer));
+        MySwap(temp_ptr);
+        return *this;
     }
 };
 

@@ -3,6 +3,8 @@
 #include "UnqPtrTests.hpp"
 #include "ShrdPtrTest.hpp"
 #include "WeakPtrTest.hpp"
+#include "DynamicArray.hpp"
+#include "DynamicArrayTest.hpp"
 
 void UiPrint()
 {
@@ -44,6 +46,18 @@ void UiPrint()
                 test_weak_ptr_move();
                 test_weak_ptr_assignment();
                 test_weak_ptr_expired();
+                break;
+            }
+            CASE("ArrayTest"):
+            {
+                test_empty_array();
+                test_array_with_size();
+                test_array_with_elements();
+                test_get_method();
+                test_set_method();
+                test_index_operator();
+                test_resize();
+                test_exceptions();
                 break;
             }
             CASE("Stop"):
