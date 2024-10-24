@@ -56,7 +56,7 @@ void test_index_operator() {
     assert(arr[1] == 20);
     assert(arr[2] == 30);
     assert(arr[3] == 40);
-    arr[1] = 100;  // Изменение значения через оператор []
+    arr[1] = 100;
     assert(arr[1] == 100);
     std::cout << "test_index_operator passed.\n";
 }
@@ -67,15 +67,15 @@ void test_resize() {
     arr.Set(2, 1);
     arr.Set(3, 2);
     
-    arr.Resize(5);  // Увеличиваем размер массива
+    arr.Resize(5);
     assert(arr.GetSize() == 5);
     
-    arr.Resize(2);  // Уменьшаем размер массива
+    arr.Resize(2);
     assert(arr.GetSize() == 2);
     
     try {
-        arr.Get(4);  // Проверяем, что доступ за границы вызывает исключение
-        assert(false);  // Если сюда дошли, значит ошибка
+        arr.Get(4);
+        assert(false);
     } catch (const std::out_of_range&) {
         std::cout << "test_resize passed.\n";
     }
@@ -83,23 +83,23 @@ void test_resize() {
 
 void test_exceptions() {
     try {
-        DynamicArray<int> arr(-5);  // Попытка создать массив с отрицательным размером
-        assert(false);  // Если сюда дошли, значит ошибка
+        DynamicArray<int> arr(-5);
+        assert(false);
     } catch (const std::invalid_argument&) {
         std::cout << "Caught invalid_argument for negative size.\n";
     }
 
     DynamicArray<int> arr(3);
     try {
-        arr.Get(10);  // Попытка получить элемент с некорректным индексом
-        assert(false);  // Если сюда дошли, значит ошибка
+        arr.Get(10);
+        assert(false);
     } catch (const std::out_of_range&) {
         std::cout << "Caught out_of_range for invalid index.\n";
     }
 
     try {
-        arr.Set(100, 10);  // Попытка установить элемент с некорректным индексом
-        assert(false);  // Если сюда дошли, значит ошибка
+        arr.Set(100, 10);
+        assert(false);
     } catch (const std::out_of_range&) {
         std::cout << "Caught out_of_range for invalid set index.\n";
     }
