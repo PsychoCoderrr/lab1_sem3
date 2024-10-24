@@ -88,27 +88,6 @@ public:
         return ptr;
     }
     
-    //Array version
-    /*template<typename U = T>
-    enable_if_t<is_array<U>::value, std::remove_extent_t<U>&> operator[](std::size_t index)
-    {
-        return ptr[index];
-    }
-    
-    template<typename U = T>
-    enable_if_t<is_array<U>::value, const std::remove_extent_t<U>&> operator[](std::size_t index) const
-    {
-        return ptr[index];
-    }*/
-    /*template<typename U = T>
-        enable_if_t<is_array_t<U>>& operator[](int index) {
-            return ptr[index];
-        }
-    template<typename U = T>
-        const K& operator[](int index) const {
-            return ptr[index];
-        }*/
-    
     template <typename U = T>
     K& operator [](int index)&
     {
